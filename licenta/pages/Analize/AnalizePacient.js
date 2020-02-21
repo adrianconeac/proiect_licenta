@@ -2,21 +2,22 @@ import React, {Component} from 'react';
 import {View, Text, StyleSheet, Alert} from 'react-native';
 import {Container} from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {Button, ListItem} from 'react-native-elements';
-import {stergerePacient} from "../services/StergereService";
+import {Button} from 'react-native-elements';
+import {stergerePacient} from "../../services/StergereService";
 import PropTypes from "prop-types";
 
 export default class AnalizePacient extends Component {
 
     constructor(props) {
+
         super(props);
         let pacientKey = this.props.navigation.getParam('pacientKey');
+
         this.state = {
             pacientKey: pacientKey
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
-
 
     handleSubmit() {
         stergerePacient(this.state.pacientKey);
@@ -33,37 +34,42 @@ export default class AnalizePacient extends Component {
         items: PropTypes.array.isRequired
     };
 
-
     render() {
         let analize = this.props.navigation.getParam('analize');
         let pacientKey = this.props.navigation.getParam('key');
+        function AnalizePacient (props) {
+            console.log("XXXXXXXXXXXXXXXXXXXXXX", props);
+            if (Object.entries(analize).length > 0) {
+                return Object.entries(analize).map(([analizeKey, value]) => (
+                    <View>
+                        <Text style={styles.item}>Nume analize: {value.nume_analize}</Text>
+                        <Text style={styles.item}>Specificatii: {value.specificatii}</Text>
+                        <Button style={styles.button}
+                                icon={
+                                    <Icon
+                                        name="edit"
+                                        size={15}
+                                        color="white"
+                                    />
+                                }
+                                title="Modifica analize"
+                                onPress={() => props.navigation.navigate('ModificareAnalizeScreen', {
 
+                                    analizeKey: analizeKey,
+                                    pacientKey: pacientKey,
+                                    analize: value
+                                })}>
+                        </Button>
+                    </View>
+                ));
+            } else {
+                return <Text>Nu avem analize</Text>;
+            }
+        }
         return (
-
             <Container>
                 <View>
-                    {Object.values(analize).map((value) => {
-                        return (
-                            <View>
-                                <Text style={styles.item}>Nume analize: {value.nume_analize}</Text>
-                                <Text style={styles.item}>Specificatii: {value.specificatii}</Text>
-                                <Button style={styles.button}
-                                        icon={
-                                            <Icon
-                                                name="edit"
-                                                size={15}
-                                                color="white"
-                                            />
-                                        }
-                                        title="Modifica analize"
-                                        onPress={() => this.props.navigation.navigate('ModificareAnalizeScreen', {
-                                            analize: analize,
-                                            pacientKey: pacientKey
-                                        })}>
-                                </Button>
-                            </View>
-                        )
-                    })}
+                    <AnalizePacient props={this.props} navigation={this.props.navigation} />
                 </View>
                 <View>
                     <Button style={styles.button}
@@ -111,17 +117,3 @@ const styles = StyleSheet.create({
         marginLeft: 10
     },
 });
-
-
-{/*<Text style={styles.item}>Nume: {pacient.date_generale.nume}</Text>*/
-}
-{/*<Text style={styles.item}>Prenume: {pacient.date_generale.prenume}</Text>*/
-}
-{/*<Text style={styles.item}>CNP: {pacient.date_generale.cnp}</Text>*/
-}
-{/*<Text style={styles.item}>Data nasterii: {pacient.date_generale.data_nasterii}</Text>*/
-}
-{/*<Text style={styles.item}>Adresa: {pacient.date_generale.adresa}</Text>*/
-}
-{/*<Text style={styles.item}>Nume analize: {pacient.analize.nume_analize}</Text>*/
-}

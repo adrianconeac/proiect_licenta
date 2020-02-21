@@ -6,7 +6,7 @@ import {
     TouchableHighlight,
     Alert
 } from 'react-native';
-import {modifPacient} from '../services/ModificareService';
+import {modifPacient} from '../../services/ModificareService';
 import {Input, Item, Label} from "native-base";
 import DatePicker from 'react-native-datepicker'
 
@@ -141,33 +141,17 @@ export default class ModificarePacienti extends Component {
                         value={this.state.date_generale.cnp}
                     />
                 </Item>
-
-                <DatePicker
-                    style={{width: 200, marginTop: 5}}
-                    date={this.state.date}
-                    mode="date"
-                    placeholder="Data nasterii"
-                    format="YYYY-MM-DD"
-                    minDate="1950-01-01"
-                    maxDate="2116-06-01"
-                    confirmBtnText="Confirm"
-                    cancelBtnText="Cancel"
-                    customStyles={{
-                        dateIcon: {
-                            position: 'absolute',
-                            left: 0,
-                            top: 4,
-                            marginLeft: 0
-                        },
-                        dateInput: {
-                            marginLeft: 36
-                        }
-                    }}
-                    onDateChange={(date) => {
-                        this.setState({data_nasterii: date})
-                    }}
-                />
-
+                <Item floatingLabel>
+                    <Label style={styles.input}>
+                        Data nasterii
+                    </Label>
+                    <Input
+                        autoCorrect={false}
+                        // keyboardType={'numeric'}
+                        onChange={this.handleDataNasteriiModif.bind(this)}
+                        value={this.state.date_generale.data_nasterii}
+                    />
+                </Item>
                 <TouchableHighlight
                     style={styles.button}
                     underlayColor="white"

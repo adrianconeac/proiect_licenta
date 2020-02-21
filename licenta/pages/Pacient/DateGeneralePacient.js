@@ -3,7 +3,7 @@ import {View, Text, StyleSheet, Alert} from 'react-native';
 import {Container} from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button, ListItem} from 'react-native-elements';
-import {stergerePacient} from "../services/StergereService";
+import {stergerePacient} from "../../services/StergereService";
 import PropTypes from "prop-types";
 
 export default class DateGeneralePacient extends Component {
@@ -33,11 +33,10 @@ export default class DateGeneralePacient extends Component {
         items: PropTypes.array.isRequired
     };
 
-
     render() {
         let date_generale = this.props.navigation.getParam('date_generale');
         // let pacientKey = this.props.navigation.getParam('pacientKey');
-        let pacient = this.props.navigation.getParam('pacient');
+        //let pacient = this.props.navigation.getParam('pacient');
         let pacientKey = this.props.navigation.getParam('key');
         return (
 

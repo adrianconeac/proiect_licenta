@@ -6,19 +6,22 @@ import {
     TouchableHighlight,
     Alert
 } from 'react-native';
-import {addAnalize} from '../services/AdaugareService';
 import {Input, Item, Label} from "native-base";
+import {modifAnalize} from "../../services/ModificareService";
 
-export default class AdaugareAnalize extends Component {
+export default class ModificareAnalize extends Component {
     constructor(props) {
         super(props);
+        let analize = this.props.navigation.getParam('analize');
         let pacientKey = this.props.navigation.getParam('pacientKey');
+        let analizeKey = this.props.navigation.getParam('analizeKey');
         this.state = {
-            analize:{
-                nume_analize: '',
-                specificatii: '',
+            analize: {
+                nume_analize: analize.nume_analize,
+                specificatii: analize.specificatii,
             },
-            pacientKey: pacientKey
+            pacientKey: pacientKey,
+            analizeKey: analizeKey
 
         };
         this.handleNumeAnalizeChange = this.handleNumeAnalizeChange.bind(this);
@@ -29,26 +32,28 @@ export default class AdaugareAnalize extends Component {
     handleNumeAnalizeChange(e) {
 
         this.setState({
-
-            nume_analize: e.nativeEvent.text,
-
+            analize: {
+                ...this.state.analize,
+                nume_analize: e.nativeEvent.text,
+            }
         });
     }
 
     handleSpecificatiiChange(e) {
 
         this.setState({
-
-            specificatii: e.nativeEvent.text,
-
+            analize: {
+                ...this.state.analize,
+                specificatii: e.nativeEvent.text,
+            }
         });
     }
 
 
     handleSubmit() {
-        addAnalize(this.state.nume_analize, this.state.specificatii, this.state.pacientKey);
+        modifAnalize(this.state.analize.nume_analize, this.state.analize.specificatii, this.state.pacientKey, this.state.analizeKey);
         Alert.alert(
-                'Analize adaugate cu succes'
+            'Analize modificate cu succes'
         );
     }
 
@@ -58,6 +63,7 @@ export default class AdaugareAnalize extends Component {
 
 
     render() {
+
         return (
             <View style={styles.main}>
 
@@ -68,7 +74,7 @@ export default class AdaugareAnalize extends Component {
                     </Label>
                     <Input
                         autoCorrect={false}
-                        onChange={this.handleNumeAnalizeChange.bind(this)} value={this.state.nume_analize}
+                        onChange={this.handleNumeAnalizeChange.bind(this)} value={this.state.analize.nume_analize}
                     />
                 </Item>
                 <Item floatingLabel>
@@ -76,7 +82,7 @@ export default class AdaugareAnalize extends Component {
                         Specificatii
                     </Label>
                     <Input autoCorrect={false}
-                           onChange={this.handleSpecificatiiChange.bind(this)} value={this.state.specificatii}
+                           onChange={this.handleSpecificatiiChange.bind(this)} value={this.state.analize.specificatii}
                     />
                 </Item>
                 <TouchableHighlight
@@ -90,7 +96,7 @@ export default class AdaugareAnalize extends Component {
                 >
                     <Text
                         style={styles.buttonText}>
-                        Adauga
+                        Modifica
                     </Text>
                 </TouchableHighlight>
 

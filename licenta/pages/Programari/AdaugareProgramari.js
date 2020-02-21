@@ -6,140 +6,107 @@ import {
     TouchableHighlight,
     Alert
 } from 'react-native';
-import {addItem,} from '../services/AdaugareService';
+import {addProgramari} from '../../services/AdaugareService';
 import {Input, Item, Label} from "native-base";
 import DatePicker from 'react-native-datepicker'
 
-export default class AdaugarePacienti extends Component {
+
+export default class AdaugareProgramari extends Component {
     constructor(props) {
         super(props);
-        let pacient = this.props.navigation.getParam('pacient', {});
         let pacientKey = this.props.navigation.getParam('pacientKey');
         this.state = {
-            date_generale: {
-                nume: '',
-                prenume: '',
-                data_nasterii: '',
-                adresa: '',
-                cnp: ''
+            programari: {
+                nume_programare: '',
+                data: '',
+                ora: '',
             },
-            pacientKey: '',
+            pacientKey: pacientKey
 
         };
-        this.handleNumeChange = this.handleNumeChange.bind(this);
-        this.handlePrenumeChange = this.handlePrenumeChange.bind(this);
-        this.handleDataNasteriiChange = this.handleDataNasteriiChange.bind(this);
-        this.handleAdresaChange = this.handleAdresaChange.bind(this);
-        this.handleCNPChange = this.handleCNPChange.bind(this);
+        this.handleNumeProgramareChange = this.handleNumeProgramareChange.bind(this);
+        this.handleDataChange = this.handleDataChange.bind(this);
+        this.handleOraChange = this.handleOraChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleNumeChange(e) {
+    handleNumeProgramareChange(e) {
 
         this.setState({
 
-            nume: e.nativeEvent.text,
+            nume_programare: e.nativeEvent.text,
 
         });
     }
 
-    handlePrenumeChange(e) {
+    handleDataChange(e) {
 
         this.setState({
 
-            prenume: e.nativeEvent.text,
+            data: e.nativeEvent.text,
 
         });
     }
 
-    handleDataNasteriiChange(e) {
+    handleOraChange(e) {
 
         this.setState({
 
-            data_nasterii: e.nativeEvent.text,
-
-        });
-    }
-
-    handleAdresaChange(e) {
-
-        this.setState({
-
-            adresa: e.nativeEvent.text,
-
-        });
-    }
-
-    handleCNPChange(e) {
-
-        this.setState({
-
-            cnp: e.nativeEvent.text,
+            ora: e.nativeEvent.text,
 
         });
     }
 
 
     handleSubmit() {
-        addItem(this.state.nume, this.state.prenume, this.state.data_nasterii, this.state.adresa, this.state.cnp);
+        addProgramari(this.state.nume_programare, this.state.data, this.state.ora, this.state.pacientKey);
         Alert.alert(
-            'Pacient adaugat cu succes'
+            'Programare adaugata cu succes'
         );
     }
 
     navigation() {
-        this.props.navigation.navigate('ListaPacientiScreen')
+        this.props.navigation.navigate('DosarPacientScreen')
     }
-
 
     render() {
         return (
             <View style={styles.main}>
 
+                {/*<Item floatingLabel>*/}
+                {/*    <Label*/}
+                {/*        style={styles.input}>*/}
+                {/*        Nume analiza*/}
+                {/*    </Label>*/}
+                {/*    <Input*/}
+                {/*        autoCorrect={false}*/}
+                {/*        onChange={this.handleNumeAnalizeChange.bind(this)} value={this.state.nume_analize}*/}
+                {/*    />*/}
+                {/*</Item>*/}
+                {/*<Item floatingLabel>*/}
+                {/*    <Label style={styles.input}>*/}
+                {/*        Specificatii*/}
+                {/*    </Label>*/}
+                {/*    <Input autoCorrect={false}*/}
+                {/*           onChange={this.handleSpecificatiiChange.bind(this)} value={this.state.specificatii}*/}
+                {/*    />*/}
+                {/*</Item>*/}
+
                 <Item floatingLabel>
                     <Label
                         style={styles.input}>
-                        Nume
+                        Nume analiza
                     </Label>
                     <Input
                         autoCorrect={false}
-                        onChange={this.handleNumeChange.bind(this)} value={this.state.nume}
+                        onChange={this.handleNumeProgramareChange.bind(this)} value={this.state.nume_programare}
                     />
                 </Item>
-                <Item floatingLabel>
-                    <Label style={styles.input}>
-                        Prenume
-                    </Label>
-                    <Input autoCorrect={false}
-                           onChange={this.handlePrenumeChange.bind(this)} value={this.state.prenume}
-                    />
-                </Item>
-                <Item floatingLabel>
-                    <Label style={styles.input}>
-                        Adresa
-                    </Label>
-                    <Input
-                        autoCorrect={false}
-                        onChange={this.handleAdresaChange.bind(this)} value={this.state.adresa}
-                    />
-                </Item>
-                <Item floatingLabel>
-                    <Label style={styles.input}>
-                        CNP
-                    </Label>
-                    <Input
-                        autoCorrect={false}
-                        keyboardType={'numeric'}
-                        onChange={this.handleCNPChange.bind(this)} value={this.state.cnp}
-                    />
-                </Item>
-
-
                 <DatePicker
                     style={{width: 200, marginTop: 5}}
                     date={this.state.date}
                     mode="date"
-                    placeholder="Data nasterii"
+                    placeholder="Data"
                     format="YYYY-MM-DD"
                     minDate="1950-01-01"
                     maxDate="2116-06-01"
@@ -157,9 +124,34 @@ export default class AdaugarePacienti extends Component {
                         }
                     }}
                     onDateChange={(date) => {
-                        this.setState({data_nasterii: date})
+                        this.setState({data: date})
                     }}
                 />
+
+                <DatePicker
+                    style={{width: 200, marginTop: 5}}
+                    date={this.state.time}
+                    mode="time"
+                    placeholder="Ora"
+                    format="HH:mm"
+                    confirmBtnText="Confirm"
+                    cancelBtnText="Cancel"
+                    customStyles={{
+                        dateIcon: {
+                            position: 'absolute',
+                            left: 0,
+                            top: 4,
+                            marginLeft: 0
+                        },
+                        dateInput: {
+                            marginLeft: 36
+                        }
+                    }}
+                    onDateChange={(time) => {
+                        this.setState({ora: time})
+                    }}
+                />
+
 
                 <TouchableHighlight
                     style={styles.button}

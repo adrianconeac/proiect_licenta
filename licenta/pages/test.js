@@ -1,13 +1,25 @@
-import React, { Component } from 'react';
-import {View, Text, Button} from 'react-native';
+import { SearchBar } from 'react-native-elements';
+import React from "react";
 
-export default class Test extends Component {
+export default class Test extends React.Component {
+    state = {
+        // search: '',
+    };
+
+    updateSearch = search => {
+        this.setState({ search });
+    };
+
     render() {
+        const { search } = this.state;
+
         return (
-            <View>
-                <Text>Home Screen</Text>
-                <Button onPress={() => this.props.navigation.navigate('PacientDetaliiScreen')} title="apasa"/>
-            </View>
-        )
+            <SearchBar
+                placeholder="Type Here..."
+                onChangeText={this.updateSearch}
+                value={search}
+            />
+        );
     }
 }
+

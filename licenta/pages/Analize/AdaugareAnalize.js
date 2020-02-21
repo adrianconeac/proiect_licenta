@@ -7,19 +7,18 @@ import {
     Alert
 } from 'react-native';
 import {Input, Item, Label} from "native-base";
-import {modifAnalize} from "../services/ModificareService";
+import {addAnalize} from "../../services/AdaugareService";
 
-export default class ModificareAnalize extends Component {
+export default class AdaugareAnalize extends Component {
     constructor(props) {
         super(props);
         let pacientKey = this.props.navigation.getParam('pacientKey');
-        let analize = this.props.navigation.getParam('analize', {});
         this.state = {
-            analize: {
-                nume_analize: analize.nume_analize,
-                specificatii: analize.specificatii,
+            analize:{
+                nume_analize: '',
+                specificatii: '',
             },
-            pacientKey: pacientKey,
+            pacientKey: pacientKey
 
         };
         this.handleNumeAnalizeChange = this.handleNumeAnalizeChange.bind(this);
@@ -30,28 +29,26 @@ export default class ModificareAnalize extends Component {
     handleNumeAnalizeChange(e) {
 
         this.setState({
-            analize: {
-                ...this.state.analize,
-                nume_analize: e.nativeEvent.text,
-            }
+
+            nume_analize: e.nativeEvent.text,
+
         });
     }
 
     handleSpecificatiiChange(e) {
 
         this.setState({
-            analize: {
-                ...this.state.analize,
-                specificatii: e.nativeEvent.text,
-            }
+
+            specificatii: e.nativeEvent.text,
+
         });
     }
 
 
     handleSubmit() {
-        modifAnalize(this.state.analize.nume_analize, this.state.analize.specificatii, this.state.pacientKey);
+        addAnalize(this.state.nume_analize, this.state.specificatii, this.state.pacientKey);
         Alert.alert(
-            'Analize modificate cu succes'
+                'Analize adaugate cu succes'
         );
     }
 
@@ -71,7 +68,7 @@ export default class ModificareAnalize extends Component {
                     </Label>
                     <Input
                         autoCorrect={false}
-                        onChange={this.handleNumeAnalizeChange.bind(this)} value={this.state.analize.nume_analize}
+                        onChange={this.handleNumeAnalizeChange.bind(this)} value={this.state.nume_analize}
                     />
                 </Item>
                 <Item floatingLabel>
@@ -79,7 +76,7 @@ export default class ModificareAnalize extends Component {
                         Specificatii
                     </Label>
                     <Input autoCorrect={false}
-                           onChange={this.handleSpecificatiiChange.bind(this)} value={this.state.analize.specificatii}
+                           onChange={this.handleSpecificatiiChange.bind(this)} value={this.state.specificatii}
                     />
                 </Item>
                 <TouchableHighlight
