@@ -147,6 +147,8 @@
 import React, {Component} from 'react';
 import {Alert, StyleSheet, Text, View, TouchableOpacity} from 'react-native';
 import {Agenda} from 'react-native-calendars';
+import {Button} from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 
 export default class CalendarProgramari extends Component {
@@ -158,6 +160,38 @@ export default class CalendarProgramari extends Component {
         };
     }
 
+    navigationFunction() {
+        this.props.navigation.navigate('LoginScreen')
+    }
+
+    static navigationOptions = ({navigation}) => {
+        const logOut = navigation.getParam("logout", () => {
+        });
+        return {
+            title: 'Calendar programari',
+            headerRight:
+                () => (
+                    <Button
+                        buttonStyle={{
+                            backgroundColor:'#546e7a',
+                            marginRight: 10
+                        }}
+                        icon={
+                            <Icon
+                                name="sign-out"
+                                size={15}
+                                color="white"
+                            />
+                        }
+                        title="Sign out"
+                        onPress={logOut}/>
+                )
+        }
+    };
+
+    componentDidMount() {
+        this.props.navigation.setParams({logout: () => this.navigationFunction()});
+    }
 
     render() {
         let programari = this.props.navigation.getParam('programari');

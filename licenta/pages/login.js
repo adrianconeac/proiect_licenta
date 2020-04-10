@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, StyleSheet }from "react-native";
-import { Container, Form, Input, Item, Button, Label} from "native-base";
+import { Text, StyleSheet, View} from "react-native";
+import { Container, Content, Header, Form, Input, Item, Button, Label} from "native-base";
 
 import * as firebase from 'firebase';
 
@@ -16,7 +16,7 @@ class LoginTab extends React.Component {
     }
 
     navigationFunction() {
-        this.props.navigation.navigate('ListaPacientiScreen')
+        this.props.navigation.navigate('AddItemScreen')
     }
 
     loginFunction() {
@@ -33,13 +33,14 @@ class LoginTab extends React.Component {
             }
 
             firebase.auth().createUserWithEmailAndPassword(email, password)
-        } catch (error) {z
+        } catch (error) {
             console.log(error.toString())
         }
     };
 
 
     loginUser = (email, password) => {
+
         try {
 
             firebase.auth().signInWithEmailAndPassword(email, password).then(function (user) {
@@ -49,10 +50,6 @@ class LoginTab extends React.Component {
             console.log(error.toString())
 
         }
-    };
-
-    static navigationOptions = {
-        header: null,
     };
 
     render() {
@@ -69,7 +66,7 @@ class LoginTab extends React.Component {
                    </Item>
 
                    <Item floatingLabel>
-                       <Label>Parola</Label>
+                       <Label>Password</Label>
                        <Input
                            secureTextEntry={true}
                            autoCorrect={false}
@@ -92,14 +89,6 @@ class LoginTab extends React.Component {
                            primary
                            onPress={() => this.props.navigation.navigate('RegisterScreen')}>
                        <Text style={{color:'white'}}>Sign Up</Text>
-                   </Button>
-
-                   <Button style={{marginTop:10}}
-                           full
-                           rounded
-                           primary
-                           onPress={() => this.props.navigation.navigate('SchimbareParolaScreen')}>
-                       <Text style={{color:'white'}}>Ati uitat parola?</Text>
                    </Button>
                </Form>
            </Container>

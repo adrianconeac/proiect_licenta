@@ -22,31 +22,69 @@ import AdaugareOperatii from "./pages/Operatii/AdaugareOperatii";
 import OperatiiPacient from "./pages/Operatii/OperatiiPacient";
 import ModificareOperatii from "./pages/Operatii/ModificareOperatii";
 import ModificareProgramare from "./pages/Programari/ModificareProgramare";
+import AdaugarePrescriptie from "./pages/PrescriptiePacient/AdaugarePrescriptie";
+import AfisarePrescriptie from "./pages/PrescriptiePacient/AfisarePrescriptie";
+import ModificarePrescriptie from "./pages/PrescriptiePacient/ModificarePrescriptie";
+import AdaugareVaccin from "./pages/VaccinPacient/AdaugareVaccin";
+import AfisareVaccin from "./pages/VaccinPacient/AfisareVaccin";
+import ModificareVaccin from "./pages/VaccinPacient/ModificareVaccin";
+import AdaugareExamenFizic from "./pages/ExamenFizic/AdaugareExamenFizic";
+import AfisareExamenFizic from "./pages/ExamenFizic/AfisareExamenFizic";
+import ModificareExamenFizic from "./pages/ExamenFizic/ModificareExamenFizic";
+import AdaugareEKG from "./pages/EKG/AdaugareEKG";
+import AfisareEKG from "./pages/EKG/AfisareEKG";
+import ModificareEKG from "./pages/EKG/ModificareEKG";
+import SchimbareParola from "./pages/InregistrareMedic/SchimbareParola";
+import SetariCont from './pages/InregistrareMedic/SetariCont';
 
 const AppNavigator = createStackNavigator(
     {
-        AdaugarePacientiScreen: AdaugarePacienti,
-        ListaPacientiScreen: ListaPacienti,
-        HomeScreen: Home,
         LoginScreen: LoginTab,
         RegisterScreen: RegisterTab,
-        AnalizePacientScreen: AnalizePacient,
+        SchimbareParolaScreen: SchimbareParola,
+        SetariContScreen: SetariCont,
+        //Pacient
+        AdaugarePacientiScreen: AdaugarePacienti,
+        ListaPacientiScreen: ListaPacienti,
         ModificarePacientiScreen: ModificarePacienti,
-        AdaugareAnalizeScreen: AdaugareAnalize,
         DosarPacientScreen: DosarPacient,
         DateGeneralePacientScreen: DateGeneralePacient,
+        HomeScreen: Home,
+        //Analize
+        AnalizePacientScreen: AnalizePacient,
+        AdaugareAnalizeScreen: AdaugareAnalize,
         ModificareAnalizeScreen: ModificareAnalize,
+        //Programari
         CalendarProgramariScreen: CalendarProgramari,
         AdaugareProgramariScreen: AdaugareProgramari,
         AfisareProgramariPacientScreen: AfisareProgramariPacient,
+        ModificareProgramareScreen: ModificareProgramare,
+        //Operatii
         AdaugareOperatiiScreen: AdaugareOperatii,
         AfisareOperatiiScreen: OperatiiPacient,
         ModificareOperatiiScreen: ModificareOperatii,
-        ModificareProgramareScreen: ModificareProgramare,
+        //Prescriptie
+        AdaugarePrescriptieScreen: AdaugarePrescriptie,
+        AfisarePrescriptieScreen: AfisarePrescriptie,
+        ModificarePrescriptieScreen: ModificarePrescriptie,
+        //Vaccin
+        AdaugareVaccinScreen: AdaugareVaccin,
+        AfisareVaccinScreen: AfisareVaccin,
+        ModificareVaccinScreen: ModificareVaccin,
+        //ExamenFizic
+        AdaugareExamenFizicScreen: AdaugareExamenFizic,
+        AfisareExamenFizicScreen: AfisareExamenFizic,
+        ModificareExamenFizicScreen: ModificareExamenFizic,
+        //EKG
+        AdaugareEKGScreen: AdaugareEKG,
+        AfisareEKGScreen: AfisareEKG,
+        ModificareEKGScreen: ModificareEKG,
+
+
         TestScreen: Test
     },
     {
-        initialRouteName: 'ListaPacientiScreen',
+        initialRouteName: 'LoginScreen',
     }
 );
 

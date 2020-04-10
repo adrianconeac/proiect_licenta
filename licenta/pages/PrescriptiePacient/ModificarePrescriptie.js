@@ -6,64 +6,80 @@ import {
     TouchableHighlight,
     Alert, ScrollView
 } from 'react-native';
-import {addProgramari} from '../../services/AdaugareService';
 import {Input, Item, Label} from "native-base";
-import DatePicker from 'react-native-datepicker'
+import {modifPrescriptie} from "../../services/ModificareService";
 import {Button} from "react-native-elements";
-import Icon from "react-native-vector-icons/FontAwesome";
+// import Icon from "react-native-vector-icons/FontAwesome";
+import Icon from "react-native-vector-icons/FontAwesome5";
 
-
-export default class AdaugareProgramari extends Component {
+export default class ModificarePrescriptie extends Component {
     constructor(props) {
         super(props);
+        let prescriptie = this.props.navigation.getParam('prescriptie');
         let pacientKey = this.props.navigation.getParam('pacientKey');
+        let prescriptieKey = this.props.navigation.getParam('prescriptieKey');
         this.state = {
-            programari: {
-                nume_programare: '',
-                data: '',
-                ora: '',
+            prescriptie: {
+                medicament: prescriptie.medicament,
+                doza: prescriptie.doza,
+                nota: prescriptie.nota,
+                data: prescriptie.data,
             },
-            pacientKey: pacientKey
+            pacientKey: pacientKey,
+            prescriptieKey: prescriptieKey
 
         };
-        this.handleNumeProgramareChange = this.handleNumeProgramareChange.bind(this);
+        this.handleMedicamentChange = this.handleMedicamentChange.bind(this);
+        this.handleDozaChange = this.handleDozaChange.bind(this);
+        this.handleNotaChange = this.handleNotaChange.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
-        this.handleOraChange = this.handleOraChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleNumeProgramareChange(e) {
+    handleMedicamentChange(e) {
 
         this.setState({
+            prescriptie: {
+                ...this.state.prescriptie,
+                medicament: e.nativeEvent.text,
+            }
+        });
+    }
 
-            nume_programare: e.nativeEvent.text,
+    handleDozaChange(e) {
 
+        this.setState({
+            prescriptie: {
+                ...this.state.prescriptie,
+                doza: e.nativeEvent.text,
+            }
+        });
+    }
+
+    handleNotaChange(e) {
+
+        this.setState({
+            prescriptie: {
+                ...this.state.prescriptie,
+                nota: e.nativeEvent.text,
+            }
         });
     }
 
     handleDataChange(e) {
 
         this.setState({
-
-            data: e.nativeEvent.text,
-
+            prescriptie: {
+                ...this.state.prescriptie,
+                data: e.nativeEvent.text,
+            }
         });
     }
-
-    handleOraChange(e) {
-
-        this.setState({
-
-            ora: e.nativeEvent.text,
-
-        });
-    }
-
 
     handleSubmit() {
-        addProgramari(this.state.nume_programare, this.state.data, this.state.ora, this.state.pacientKey);
+        modifPrescriptie(this.state.prescriptie.medicament, this.state.prescriptie.doza, this.state.prescriptie.nota, this.state.prescriptie.data, this.state.pacientKey, this.state.prescriptieKey);
         Alert.alert(
-            'Programare adaugata cu succes'
+            'Prescriptie modificata cu succes'
         );
     }
 
@@ -79,7 +95,7 @@ export default class AdaugareProgramari extends Component {
         const logOut = navigation.getParam("logout", () => {
         });
         return {
-            title: 'Adaugare programare',
+            title: 'Modificare prescriptie',
             headerRight:
                 () => (
                     <Button
@@ -104,70 +120,46 @@ export default class AdaugareProgramari extends Component {
         this.props.navigation.setParams({logout: () => this.navigationFunction()});
     }
 
+
     render() {
+
         return (
                 <View style={styles.main}>
+
                     <Item floatingLabel>
                         <Label
                             style={styles.input}>
-                            Nume analiza
+                            Medicament
                         </Label>
                         <Input
                             autoCorrect={false}
-                            onChange={this.handleNumeProgramareChange.bind(this)} value={this.state.nume_programare}
+                            onChange={this.handleMedicamentChange.bind(this)} value={this.state.prescriptie.medicament}
                         />
                     </Item>
-                    <DatePicker
-                        style={{width: 200, marginTop: 5}}
-                        date={this.state.date}
-                        mode="date"
-                        placeholder="Data"
-                        format="YYYY-MM-DD"
-                        minDate="1950-01-01"
-                        maxDate="2116-06-01"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },
-                            dateInput: {
-                                marginLeft: 36
-                            }
-                        }}
-                        onDateChange={(date) => {
-                            this.setState({data: date})
-                        }}
-                    />
-
-                    <DatePicker
-                        style={{width: 200, marginTop: 5}}
-                        date={this.state.time}
-                        mode="time"
-                        placeholder="Ora"
-                        format="HH:mm"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },
-                            dateInput: {
-                                marginLeft: 36
-                            }
-                        }}
-                        onDateChange={(time) => {
-                            this.setState({ora: time})
-                        }}
-                    />
-
-
+                    <Item floatingLabel>
+                        <Label style={styles.input}>
+                            Doza
+                        </Label>
+                        <Input autoCorrect={false}
+                               onChange={this.handleDozaChange.bind(this)} value={this.state.prescriptie.doza}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label style={styles.input}>
+                            Nota
+                        </Label>
+                        <Input autoCorrect={false}
+                               onChange={this.handleNotaChange.bind(this)} value={this.state.prescriptie.nota}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label style={styles.input}>
+                            Data
+                        </Label>
+                        <Input autoCorrect={false}
+                               onChange={this.handleDataChange.bind(this)} value={this.state.prescriptie.data}
+                        />
+                    </Item>
                     <TouchableHighlight
                         style={styles.button}
                         underlayColor="white"
@@ -179,9 +171,11 @@ export default class AdaugareProgramari extends Component {
                     >
                         <Text
                             style={styles.buttonText}>
-                            Adauga
+                            Modifica
                         </Text>
                     </TouchableHighlight>
+
+
                 </View>
         )
     }

@@ -4,10 +4,12 @@ import {
     Text,
     StyleSheet,
     TouchableHighlight,
-    Alert
+    Alert, ScrollView
 } from 'react-native';
 import {Input, Item, Label} from "native-base";
 import {modifAnalize} from "../../services/ModificareService";
+import {Button} from "react-native-elements";
+import Icon from "react-native-vector-icons/FontAwesome";
 
 export default class ModificareAnalize extends Component {
     constructor(props) {
@@ -61,47 +63,78 @@ export default class ModificareAnalize extends Component {
         this.props.navigation.navigate('DosarPacientScreen')
     }
 
+    navigationFunction() {
+        this.props.navigation.navigate('LoginScreen')
+    }
+
+    static navigationOptions = ({navigation}) => {
+        const logOut = navigation.getParam("logout", () => {
+        });
+        return {
+            title: 'Modificare analize',
+            headerRight:
+                () => (
+                    <Button
+                        buttonStyle={{
+                            backgroundColor:'#546e7a',
+                            marginRight: 10
+                        }}
+                        icon={
+                            <Icon
+                                name="sign-out"
+                                size={15}
+                                color="white"
+                            />
+                        }
+                        title="Sign out"
+                        onPress={logOut}/>
+                )
+        }
+    };
+
+    componentDidMount() {
+        this.props.navigation.setParams({logout: () => this.navigationFunction()});
+    }
 
     render() {
 
         return (
-            <View style={styles.main}>
+                <View style={styles.main}>
 
-                <Item floatingLabel>
-                    <Label
-                        style={styles.input}>
-                        Nume analiza
-                    </Label>
-                    <Input
-                        autoCorrect={false}
-                        onChange={this.handleNumeAnalizeChange.bind(this)} value={this.state.analize.nume_analize}
-                    />
-                </Item>
-                <Item floatingLabel>
-                    <Label style={styles.input}>
-                        Specificatii
-                    </Label>
-                    <Input autoCorrect={false}
-                           onChange={this.handleSpecificatiiChange.bind(this)} value={this.state.analize.specificatii}
-                    />
-                </Item>
-                <TouchableHighlight
-                    style={styles.button}
-                    underlayColor="white"
-                    onPress={() => {
-                        this.handleSubmit();
-                        this.navigation()
-                    }}
+                    <Item floatingLabel>
+                        <Label
+                            style={styles.input}>
+                            Nume analiza
+                        </Label>
+                        <Input
+                            autoCorrect={false}
+                            onChange={this.handleNumeAnalizeChange.bind(this)} value={this.state.analize.nume_analize}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label style={styles.input}>
+                            Specificatii
+                        </Label>
+                        <Input autoCorrect={false}
+                               onChange={this.handleSpecificatiiChange.bind(this)}
+                               value={this.state.analize.specificatii}
+                        />
+                    </Item>
+                    <TouchableHighlight
+                        style={styles.button}
+                        underlayColor="white"
+                        onPress={() => {
+                            this.handleSubmit();
+                            this.navigation()
+                        }}
 
-                >
-                    <Text
-                        style={styles.buttonText}>
-                        Modifica
-                    </Text>
-                </TouchableHighlight>
-
-
-            </View>
+                    >
+                        <Text
+                            style={styles.buttonText}>
+                            Modifica
+                        </Text>
+                    </TouchableHighlight>
+                </View>
         )
     }
 }

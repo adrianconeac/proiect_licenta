@@ -1,11 +1,15 @@
 import React, {Component} from 'react';
 import {View, Text, StyleSheet} from 'react-native';
 import PacientiComponent from '../../components/PacientiComponent';
-import {Container, Footer, FooterTab, Button} from 'native-base';
+import {Container, Footer, FooterTab, } from 'native-base';
+import {Button} from "react-native-elements";
+
+
 import {db} from '../../config/db';
 
 import { YellowBox } from 'react-native';
 import _ from 'lodash';
+import Icon from "react-native-vector-icons/FontAwesome";
 
 YellowBox.ignoreWarnings(['Setting a timer']);
 const _console = _.clone(console);
@@ -29,13 +33,40 @@ export default class ListaPacienti extends Component {
             let data = snapshot.val();
             let items = Object.values(data);
             this.setState({items: data});
-            console.log("aaaaaaaaaaaa", items)
         });
+        this.props.navigation.setParams({logout: () => this.navigationFunction()});
     }
 
-    static navigationOptions = {
-        title: 'Lista Pacienti',
+    navigationFunction() {
+        this.props.navigation.navigate('SetariContScreen')
+    }
+
+
+    static navigationOptions = ({navigation}) => {
+        const logOut = navigation.getParam("logout", () => {
+        });
+        return {
+            title: 'Adaugare vaccin',
+            headerRight:
+                () => (
+                    <Button
+                        buttonStyle={{
+                            backgroundColor:'#546e7a',
+                            marginRight: 10
+                        }}
+                        icon={
+                            <Icon
+                                name="sign-out"
+                                size={15}
+                                color="white"
+                            />
+                        }
+                        title="Sign out"
+                        onPress={logOut}/>
+                )
+        }
     };
+
     render() {
         // let programari = this.state.items.map((p) => p.programari);
         let programari= Object.entries(this.state.items).map(([Key, value])=>value.programari).filter(p=>p);
@@ -54,7 +85,7 @@ export default class ListaPacienti extends Component {
                 <Footer>
                     <FooterTab style={styles.footer}>
                         <Button full
-
+                                buttonStyle={{ borderRightWidth: 1, }}
                                 onPress={() => this.props.navigation.navigate('AdaugarePacientiScreen')}>
 
                             <Text>adaugare pacient</Text>
@@ -84,6 +115,6 @@ const styles = StyleSheet.create({
         flex: 1,
         width: 10,
         justifyContent: 'center',
-        backgroundColor: '#79D4E7',
+        backgroundColor: '#bbeeff',
     }
 });

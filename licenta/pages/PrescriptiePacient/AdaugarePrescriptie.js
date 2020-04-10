@@ -6,37 +6,56 @@ import {
     TouchableHighlight,
     Alert, ScrollView
 } from 'react-native';
-import {addProgramari} from '../../services/AdaugareService';
 import {Input, Item, Label} from "native-base";
-import DatePicker from 'react-native-datepicker'
+import {addPrescriptie} from "../../services/AdaugareService";
+import DatePicker from "react-native-datepicker";
 import {Button} from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-
-export default class AdaugareProgramari extends Component {
+export default class AdaugarePrescriptie extends Component {
     constructor(props) {
         super(props);
         let pacientKey = this.props.navigation.getParam('pacientKey');
         this.state = {
-            programari: {
-                nume_programare: '',
-                data: '',
-                ora: '',
+            prescriptie: {
+                medicament: '',
+                doza: '',
+                nota: '',
+                data: ''
             },
             pacientKey: pacientKey
 
         };
-        this.handleNumeProgramareChange = this.handleNumeProgramareChange.bind(this);
+        this.handleMedicamentChange = this.handleMedicamentChange.bind(this);
+        this.handleDozaChange = this.handleDozaChange.bind(this);
+        this.handleNotaChange = this.handleNotaChange.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
-        this.handleOraChange = this.handleOraChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleNumeProgramareChange(e) {
+    handleMedicamentChange(e) {
 
         this.setState({
 
-            nume_programare: e.nativeEvent.text,
+            medicament: e.nativeEvent.text,
+
+        });
+    }
+
+    handleDozaChange(e) {
+
+        this.setState({
+
+            doza: e.nativeEvent.text,
+
+        });
+    }
+
+    handleNotaChange(e) {
+
+        this.setState({
+
+            nota: e.nativeEvent.text,
 
         });
     }
@@ -50,25 +69,16 @@ export default class AdaugareProgramari extends Component {
         });
     }
 
-    handleOraChange(e) {
-
-        this.setState({
-
-            ora: e.nativeEvent.text,
-
-        });
-    }
-
 
     handleSubmit() {
-        addProgramari(this.state.nume_programare, this.state.data, this.state.ora, this.state.pacientKey);
+        addPrescriptie(this.state.medicament, this.state.doza, this.state.nota, this.state.data, this.state.pacientKey);
         Alert.alert(
-            'Programare adaugata cu succes'
+            'Prescriptie adaugata cu succes'
         );
     }
 
     navigation() {
-        this.props.navigation.navigate('DosarPacientScreen')
+        this.props.navigation.navigate('ListaPacientiScreen')
     }
 
     navigationFunction() {
@@ -79,7 +89,7 @@ export default class AdaugareProgramari extends Component {
         const logOut = navigation.getParam("logout", () => {
         });
         return {
-            title: 'Adaugare programare',
+            title: 'Adaugare prescriptie',
             headerRight:
                 () => (
                     <Button
@@ -104,24 +114,41 @@ export default class AdaugareProgramari extends Component {
         this.props.navigation.setParams({logout: () => this.navigationFunction()});
     }
 
+
     render() {
         return (
                 <View style={styles.main}>
                     <Item floatingLabel>
                         <Label
                             style={styles.input}>
-                            Nume analiza
+                            Medicament
                         </Label>
                         <Input
                             autoCorrect={false}
-                            onChange={this.handleNumeProgramareChange.bind(this)} value={this.state.nume_programare}
+                            onChange={this.handleMedicamentChange.bind(this)} value={this.state.medicament}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label style={styles.input}>
+                            Doza medicament
+                        </Label>
+                        <Input autoCorrect={false}
+                               onChange={this.handleDozaChange.bind(this)} value={this.state.doza}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label style={styles.input}>
+                            Nota medicala
+                        </Label>
+                        <Input autoCorrect={false}
+                               onChange={this.handleNotaChange.bind(this)} value={this.state.nota}
                         />
                     </Item>
                     <DatePicker
                         style={{width: 200, marginTop: 5}}
                         date={this.state.date}
                         mode="date"
-                        placeholder="Data"
+                        placeholder="Data prescriptiei"
                         format="YYYY-MM-DD"
                         minDate="1950-01-01"
                         maxDate="2116-06-01"
@@ -142,32 +169,6 @@ export default class AdaugareProgramari extends Component {
                             this.setState({data: date})
                         }}
                     />
-
-                    <DatePicker
-                        style={{width: 200, marginTop: 5}}
-                        date={this.state.time}
-                        mode="time"
-                        placeholder="Ora"
-                        format="HH:mm"
-                        confirmBtnText="Confirm"
-                        cancelBtnText="Cancel"
-                        customStyles={{
-                            dateIcon: {
-                                position: 'absolute',
-                                left: 0,
-                                top: 4,
-                                marginLeft: 0
-                            },
-                            dateInput: {
-                                marginLeft: 36
-                            }
-                        }}
-                        onDateChange={(time) => {
-                            this.setState({ora: time})
-                        }}
-                    />
-
-
                     <TouchableHighlight
                         style={styles.button}
                         underlayColor="white"

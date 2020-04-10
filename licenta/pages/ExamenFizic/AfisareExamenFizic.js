@@ -6,7 +6,7 @@ import {Button} from 'react-native-elements';
 import {stergerePacient} from "../../services/StergereService";
 import PropTypes from "prop-types";
 
-export default class AfisareProgramariPacient extends Component {
+export default class AfisareExamenFizic extends Component {
 
     constructor(props) {
         super(props);
@@ -42,12 +42,12 @@ export default class AfisareProgramariPacient extends Component {
         const logOut = navigation.getParam("logout", () => {
         });
         return {
-            title: 'Operatii pacient',
+            title: 'Examen fizic',
             headerRight:
                 () => (
                     <Button
                         buttonStyle={{
-                            backgroundColor: '#546e7a',
+                            backgroundColor:'#546e7a',
                             marginRight: 10
                         }}
                         icon={
@@ -68,20 +68,27 @@ export default class AfisareProgramariPacient extends Component {
     }
 
     render() {
-        let operatii = this.props.navigation.getParam('operatii');
+        let examen_fizic = this.props.navigation.getParam('examen_fizic');
         let pacientKey = this.props.navigation.getParam('key');
 
         // let modificareKey = this.props.navigation.getParam('modificareKey');
 
-        function OperatiiPacient(props) {
-            if (Object.entries(operatii).length > 0) {
-                return Object.entries(operatii).map(([operatiiKey, value]) => (
+        function ExamenFizicPacient(props) {
+            if (Object.entries(examen_fizic).length > 0) {
+                return Object.entries(examen_fizic).map(([examen_fizicKey, value]) => (
                     <View>
-                        <Text style={styles.item}>Titlu operatie: {value.titlu_operatie}</Text>
-                        <Text style={styles.item}>Doctor: {value.doctor}</Text>
-                        <Text style={styles.item}>Spital: {value.spital}</Text>
-                        <Text style={styles.item}>Nota: {value.nota}</Text>
+                        <Text style={styles.item}>Temperatura: {value.temperatura}</Text>
+                        <Text style={styles.item}>Greutate: {value.greutate}</Text>
+                        <Text style={styles.item}>Sistolic: {value.sistolic}</Text>
+                        <Text style={styles.item}>Diastolic: {value.diastolic}</Text>
+                        <Text style={styles.item}>Puls: {value.puls}</Text>
+                        <Text style={styles.item}>Frecventa Cardiaca: {value.frecv_caridaca}</Text>
+                        <Text style={styles.item}>Frecventa Respiratorie: {value.frecv_respiratorie}</Text>
+                        <Text style={styles.item}>Zgomote Cardiace: {value.zgomote_cardiace}</Text>
+                        <Text style={styles.item}>Zgomote Respiratorii: {value.zgomote_respiratorii}</Text>
+                        <Text style={styles.item}>Diagnostic: {value.diagnostic}</Text>
                         <Text style={styles.item}>Data: {value.data}</Text>
+
                         <Button buttonStyle={styles.button}
                                 icon={
                                     <Icon
@@ -90,25 +97,26 @@ export default class AfisareProgramariPacient extends Component {
                                         color="white"
                                     />
                                 }
-                                title="Modifica operatie"
-                                onPress={() => props.navigation.navigate('ModificareOperatiiScreen', {
-                                    operatiiKey: operatiiKey,
+                                title="Modifica examen fizic"
+                                onPress={() => props.navigation.navigate('ModificareExamenFizicScreen', {
+                                    examen_fizicKey: examen_fizicKey,
                                     pacientKey: pacientKey,
-                                    operatii: value
+                                    examen_fizic: value
                                 })}>
                         </Button>
                     </View>
                 ));
             } else {
-                return <Text style={styles.operatiiNull}>Nu exista operatii</Text>;
+                return <Text style={styles.examenNull}>Nu exista examen fizic</Text>;
             }
         }
 
         return (
+
             <Container>
-                <ScrollView style={styles.container}>
+                <ScrollView>
                     <View>
-                        <OperatiiPacient props={this.props} navigation={this.props.navigation}/>
+                        <ExamenFizicPacient props={this.props} navigation={this.props.navigation}/>
                     </View>
                 </ScrollView>
                 <View>
@@ -120,8 +128,8 @@ export default class AfisareProgramariPacient extends Component {
                                     color="white"
                                 />
                             }
-                            title="Adaugare operatii"
-                            onPress={() => this.props.navigation.navigate('AdaugareOperatiiScreen', {
+                            title="Adaugare examen fizic"
+                            onPress={() => this.props.navigation.navigate('AdaugareExamenFizicScreen', {
                                 pacientKey: pacientKey
                             })}>
                     </Button>
@@ -134,6 +142,7 @@ export default class AfisareProgramariPacient extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+        paddingTop: 22
     },
     item: {
         padding: 10,
@@ -149,8 +158,8 @@ const styles = StyleSheet.create({
         width: 150,
         marginLeft: 10
     },
-    operatiiNull: {
-        marginLeft: 100,
+    examenNull: {
+        marginLeft: 80,
         fontSize: 20,
         marginTop: 250,
     }

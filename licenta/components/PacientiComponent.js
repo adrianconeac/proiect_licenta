@@ -20,9 +20,7 @@ export default class PacientiComponent extends Component {
         search: ''
     };
 
-    updateSearch = search => {
-        this.setState({ search });
-    };
+
 
     render() {
         let items = this.props.items;
@@ -32,7 +30,6 @@ export default class PacientiComponent extends Component {
             <ScrollView>
                 <SearchBar
                     placeholder="Cauta pacient"
-                    onChangeText={this.updateSearch}
                     value={search}
                 />
             <View style={styles.itemsList}
@@ -42,7 +39,7 @@ export default class PacientiComponent extends Component {
                         <View key={key}>
                             <ListItem
                                 title={items[key].date_generale.nume}
-                                subtitle={items[key].date_generale.prenume}
+                                subtitle={items[key].date_generale.cnp}
                                 bottomDivider
                                 onPress={() => this.props.navigation.navigate('DosarPacientScreen', { pacient: items[key], key, pacientKey: key, analizeKey: key})}
                             />

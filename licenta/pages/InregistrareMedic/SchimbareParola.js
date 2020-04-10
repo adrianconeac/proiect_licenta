@@ -4,38 +4,36 @@ import { Container, Form, Input, Item, Button, Label} from "native-base";
 
 import * as firebase from 'firebase';
 
-class RegisterTab extends React.Component {
+class SchimbareParola extends React.Component {
+
 
     constructor(props) {
         super(props);
 
         this.state = ({
             email: '',
-            password: ''
         })
+    }
+
+
+    forgotFunction() {
+        this.forgotPassword(this.state.email);
+
     }
 
     navigationFunction() {
         this.props.navigation.navigate('LoginScreen')
     }
 
-    RegisterFunction() {
-        this.RegisterUser(this.state.email, this.state.password)
-    }
-
-
-    RegisterUser = (email, password) => {
-
+    forgotPassword = (email) => {
         try {
-            if(this.state.password.length <6) {
-                alert("Please enter atleast 6 characters");
-                return;
-            }
-this.navigationFunction();
-            firebase.auth().createUserWithEmailAndPassword(email, password)
+            firebase.auth().sendPasswordResetEmail(email).then(function (user) {
+                alert("Email trimis cu succes");
+            })
         }
         catch (error) {
             console.log(error.toString())
+
         }
     };
 
@@ -51,30 +49,19 @@ this.navigationFunction();
                             onChangeText={(email) => this.setState({email})}
                         />
                     </Item>
-
-                    <Item floatingLabel>
-                        <Label>Password</Label>
-                        <Input
-                            secureTextEntry={true}
-                            autoCorrect={false}
-                            autoCapitalize="none"
-                            onChangeText={(password) => this.setState({password})}
-                        />
-                    </Item>
-
                     <Button style={{marginTop:10}}
                             full
                             rounded
                             primary
-                            onPress={() => {  this.RegisterFunction();}}>
-                        <Text style={{color:'white'}}>Register</Text>
+                            onPress={() => {  this.forgotFunction(); this.navigationFunction();}}>
+                        <Text style={{color:'white'}}>Trimite email</Text>
                     </Button>
                 </Form>
             </Container>
         );
     }
 }
-export default RegisterTab;
+export default SchimbareParola;
 
 const styles= StyleSheet.create({
     container: {

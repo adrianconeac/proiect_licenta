@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Alert} from 'react-native';
+import {View, Text, StyleSheet, Alert, ScrollView} from 'react-native';
 import {Container} from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button, ListItem} from 'react-native-elements';
 import {stergerePacient} from "../../services/StergereService";
 import PropTypes from "prop-types";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class DateGeneralePacient extends Component {
 
@@ -33,6 +34,42 @@ export default class DateGeneralePacient extends Component {
         items: PropTypes.array.isRequired
     };
 
+    navigationFunction() {
+        this.props.navigation.navigate('LoginScreen')
+    }
+
+    static navigationOptions = ({navigation}) => {
+        const logOut = navigation.getParam("logout", () => {
+        });
+        return {
+            title: 'Date Generale',
+            headerRight:
+                () => (
+                    <Button
+                        buttonStyle={{
+                            backgroundColor: '#546e7a',
+                            marginRight: 10
+                        }}
+                        icon={
+                            <Icon
+                                name="sign-out"
+                                size={15}
+                                color="white"
+                                style={{ marginRight: 10 }}
+                            />
+                        }
+                        title="Sign out"
+                        onPress={logOut}/>
+                )
+        }
+    };
+
+    componentDidMount() {
+        this.props.navigation.setParams({logout: () => this.navigationFunction()});
+    }
+
+    // import Icon from 'react-native-vector-icons/FontAwesome';
+
     render() {
         let date_generale = this.props.navigation.getParam('date_generale');
         // let pacientKey = this.props.navigation.getParam('pacientKey');
@@ -41,24 +78,30 @@ export default class DateGeneralePacient extends Component {
         return (
 
             <Container>
-                <View>
-
-
+                <ScrollView>
                     <View>
-                        <Text style={styles.item}>Nume: {date_generale.nume}</Text>
-                        <Text style={styles.item}>Prenume: {date_generale.prenume}</Text>
-                        <Text style={styles.item}>CNP: {date_generale.cnp}</Text>
-                        <Text style={styles.item}>Data nasterii: {date_generale.data_nasterii}</Text>
-                        <Text style={styles.item}>Adresa: {date_generale.adresa}</Text>
+                        <View>
+                            <Text style={styles.item}>Nume: {date_generale.nume}</Text>
+                            <Text style={styles.item}>Prenume: {date_generale.prenume}</Text>
+                            <Text style={styles.item}>Sex: {date_generale.sex}</Text>
+                            <Text style={styles.item}>Data nasterii: {date_generale.data_nasterii}</Text>
+                            <Text style={styles.item}>CNP: {date_generale.cnp}</Text>
+                            <Text style={styles.item}>Adresa: {date_generale.adresa}</Text>
+                            <Text style={styles.item}>Email: {date_generale.email}</Text>
+                            <Text style={styles.item}>Telefon: {date_generale.telefon}</Text>
+                            <Text style={styles.item}>Grupa Sanguina: {date_generale.grupa_sanguina}</Text>
+                        </View>
                     </View>
-                </View>
+                </ScrollView>
                 <View>
-                    <Button style={styles.button}
+                    <Button buttonStyle={styles.button}
+
                             icon={
                                 <Icon
                                     name="edit"
-                                    size={15}
+                                    size={16}
                                     color="white"
+                                    style={{ marginRight: 10 }}
                                 />
                             }
                             title="Modifica pacient"
@@ -68,7 +111,6 @@ export default class DateGeneralePacient extends Component {
                             })}>
                     </Button>
                 </View>
-
             </Container>
         );
     }
@@ -77,29 +119,17 @@ export default class DateGeneralePacient extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        paddingTop: 22
     },
     item: {
-        padding: 10,
         fontSize: 20,
         height: 50,
     },
     button: {
-        width: 150,
-        marginLeft: 10,
-        marginBottom: 30
+        marginTop: 10,
+        backgroundColor: '#546e7a',
     },
-    delete: {
-        marginTop: 20,
-        width: 150,
-        marginLeft: 10
-    },
+    buton_logout: {
+        marginRight: 10,
+        color: '#ff0000',
+    }
 });
-
-
-// {/*<Text style={styles.item}>Nume: {pacient.date_generale.nume}</Text>*/}
-// {/*<Text style={styles.item}>Prenume: {pacient.date_generale.prenume}</Text>*/}
-// {/*<Text style={styles.item}>CNP: {pacient.date_generale.cnp}</Text>*/}
-// {/*<Text style={styles.item}>Data nasterii: {pacient.date_generale.data_nasterii}</Text>*/}
-// {/*<Text style={styles.item}>Adresa: {pacient.date_generale.adresa}</Text>*/}
-// {/*<Text style={styles.item}>Nume analize: {pacient.analize.nume_analize}</Text>*/}

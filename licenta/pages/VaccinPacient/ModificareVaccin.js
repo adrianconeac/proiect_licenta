@@ -7,72 +7,36 @@ import {
     Alert, ScrollView
 } from 'react-native';
 import {Input, Item, Label} from "native-base";
-import { modifOperatii } from "../../services/ModificareService";
+import {modifVaccin} from "../../services/ModificareService";
 import {Button} from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default class ModificareOperatii extends Component {
+export default class ModificareVaccin extends Component {
     constructor(props) {
         super(props);
-        let operatii = this.props.navigation.getParam('operatii');
+        let vaccin = this.props.navigation.getParam('vaccin');
         let pacientKey = this.props.navigation.getParam('pacientKey');
-        let operatiiKey = this.props.navigation.getParam('operatiiKey');
+        let vaccinKey = this.props.navigation.getParam('vaccinKey');
         this.state = {
-            operatii: {
-                titlu_operatie: operatii.titlu_operatie,
-                doctor: operatii.doctor,
-                spital: operatii.spital,
-                nota: operatii.nota,
-                data: operatii.data,
+            vaccin: {
+                tip_vaccin: vaccin.tip_vaccin,
+                data: vaccin.data,
             },
             pacientKey: pacientKey,
-            operatiiKey: operatiiKey
+            vaccinKey: vaccinKey
 
         };
-        this.handleTitluOperatieChange = this.handleTitluOperatieChange.bind(this);
-        this.handleDoctorChange = this.handleDoctorChange.bind(this);
-        this.handleSpitalChange = this.handleSpitalChange.bind(this);
-        this.handleNotaChange = this.handleNotaChange.bind(this);
+        this.handleTipVaccinChange = this.handleTipVaccinChange.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleTitluOperatieChange(e) {
+    handleTipVaccinChange(e) {
 
         this.setState({
-            operatii: {
-                ...this.state.operatii,
-                titlu_operatie: e.nativeEvent.text,
-            }
-        });
-    }
-
-    handleDoctorChange(e) {
-
-        this.setState({
-            operatii: {
-                ...this.state.operatii,
-                doctor: e.nativeEvent.text,
-            }
-        });
-    }
-
-    handleSpitalChange(e) {
-
-        this.setState({
-            operatii: {
-                ...this.state.operatii,
-                spital: e.nativeEvent.text,
-            }
-        });
-    }
-
-    handleNotaChange(e) {
-
-        this.setState({
-            operatii: {
-                ...this.state.operatii,
-                nota: e.nativeEvent.text,
+            vaccin: {
+                ...this.state.vaccin,
+                tip_vaccin: e.nativeEvent.text,
             }
         });
     }
@@ -80,17 +44,18 @@ export default class ModificareOperatii extends Component {
     handleDataChange(e) {
 
         this.setState({
-            operatii: {
-                ...this.state.operatii,
+            vaccin: {
+                ...this.state.vaccin,
                 data: e.nativeEvent.text,
             }
         });
     }
 
+
     handleSubmit() {
-        modifOperatii(this.state.operatii.titlu_operatie, this.state.operatii.doctor, this.state.operatii.spital, this.state.operatii.nota, this.state.operatii.data, this.state.pacientKey, this.state.operatiiKey);
+        modifVaccin(this.state.vaccin.tip_vaccin, this.state.vaccin.data, this.state.pacientKey, this.state.vaccinKey);
         Alert.alert(
-            'Operatie modificate cu succes'
+            'Vaccin modificat cu succes'
         );
     }
 
@@ -106,7 +71,7 @@ export default class ModificareOperatii extends Component {
         const logOut = navigation.getParam("logout", () => {
         });
         return {
-            title: 'Modificare operatie',
+            title: 'Modificare vaccin',
             headerRight:
                 () => (
                     <Button
@@ -139,35 +104,11 @@ export default class ModificareOperatii extends Component {
                 <Item floatingLabel>
                     <Label
                         style={styles.input}>
-                        Titlu operatie
+                        Tip vaccin
                     </Label>
                     <Input
                         autoCorrect={false}
-                        onChange={this.handleTitluOperatieChange.bind(this)} value={this.state.operatii.titlu_operatie}
-                    />
-                </Item>
-                <Item floatingLabel>
-                    <Label style={styles.input}>
-                        Doctor
-                    </Label>
-                    <Input autoCorrect={false}
-                           onChange={this.handleDoctorChange.bind(this)} value={this.state.operatii.doctor}
-                    />
-                </Item>
-                <Item floatingLabel>
-                    <Label style={styles.input}>
-                        Spital
-                    </Label>
-                    <Input autoCorrect={false}
-                           onChange={this.handleSpitalChange.bind(this)} value={this.state.operatii.spital}
-                    />
-                </Item>
-                <Item floatingLabel>
-                    <Label style={styles.input}>
-                        Nota
-                    </Label>
-                    <Input autoCorrect={false}
-                           onChange={this.handleNotaChange.bind(this)} value={this.state.operatii.nota}
+                        onChange={this.handleTipVaccinChange.bind(this)} value={this.state.vaccin.tip_vaccin}
                     />
                 </Item>
                 <Item floatingLabel>
@@ -175,7 +116,7 @@ export default class ModificareOperatii extends Component {
                         Data
                     </Label>
                     <Input autoCorrect={false}
-                           onChange={this.handleDataChange.bind(this)} value={this.state.operatii.data}
+                           onChange={this.handleDataChange.bind(this)} value={this.state.vaccin.data}
                     />
                 </Item>
                 <TouchableHighlight
@@ -185,6 +126,7 @@ export default class ModificareOperatii extends Component {
                         this.handleSubmit();
                         this.navigation()
                     }}
+
                 >
                     <Text
                         style={styles.buttonText}>

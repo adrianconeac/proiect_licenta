@@ -6,58 +6,102 @@ import {
     TouchableHighlight,
     Alert, ScrollView
 } from 'react-native';
-import {addOperatii} from '../../services/AdaugareService';
 import {Input, Item, Label} from "native-base";
+import {addEKG } from "../../services/AdaugareService";
 import DatePicker from "react-native-datepicker";
 import {Button} from "react-native-elements";
 import Icon from "react-native-vector-icons/FontAwesome";
 
-export default class AdaugareOperatii extends Component {
+export default class AdaugareEKG extends Component {
     constructor(props) {
         super(props);
         let pacientKey = this.props.navigation.getParam('pacientKey');
         this.state = {
-            operatii: {
-                titlu_operatie: '',
-                doctor: '',
-                spital: '',
+            EKG: {
+                unda_P: '',
+                complex_QRS: '',
+                unda_T: '',
+                segment_QT: '',
+                unda_ST: '',
+                intervalul_RR: '',
+                intervalul_PR: '',
                 nota: '',
-                data: '',
+                data: ''
             },
             pacientKey: pacientKey
 
         };
-        this.handleTitluOperatieChange = this.handleTitluOperatieChange.bind(this);
-        this.handleDoctorChange = this.handleDoctorChange.bind(this);
-        this.handleSpitalChange = this.handleSpitalChange.bind(this);
+        this.handleUndaPChange = this.handleUndaPChange.bind(this);
+        this.handleComplexQrsChange = this.handleComplexQrsChange.bind(this);
+        this.handleUndaTChange = this.handleUndaTChange.bind(this);
+        this.handleSegmentQtChange = this.handleSegmentQtChange.bind(this);
+        this.handleUndaStChange = this.handleUndaStChange.bind(this);
+        this.handleIntervalul_RrChange = this.handleIntervalul_RrChange.bind(this);
+        this.handleIntervalul_PrChange = this.handleIntervalul_PrChange.bind(this);
         this.handleNotaChange = this.handleNotaChange.bind(this);
         this.handleDataChange = this.handleDataChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
-    handleTitluOperatieChange(e) {
+    handleUndaPChange(e) {
 
         this.setState({
 
-            titlu_operatie: e.nativeEvent.text,
+            unda_P: e.nativeEvent.text,
 
         });
     }
 
-    handleDoctorChange(e) {
+    handleComplexQrsChange(e) {
 
         this.setState({
 
-            doctor: e.nativeEvent.text,
+            complex_QRS: e.nativeEvent.text,
 
         });
     }
 
-    handleSpitalChange(e) {
+    handleUndaTChange(e) {
 
         this.setState({
 
-            spital: e.nativeEvent.text,
+            unda_T: e.nativeEvent.text,
+
+        });
+    }
+
+    handleSegmentQtChange(e) {
+
+        this.setState({
+
+            segment_QT: e.nativeEvent.text,
+
+        });
+    }
+
+    handleUndaStChange(e) {
+
+        this.setState({
+
+            unda_ST: e.nativeEvent.text,
+
+        });
+    }
+
+    handleIntervalul_RrChange(e) {
+
+        this.setState({
+
+            intervalul_RR: e.nativeEvent.text,
+
+        });
+    }
+
+    handleIntervalul_PrChange(e) {
+
+        this.setState({
+
+            intervalul_PR: e.nativeEvent.text,
 
         });
     }
@@ -82,9 +126,11 @@ export default class AdaugareOperatii extends Component {
 
 
     handleSubmit() {
-        addOperatii(this.state.titlu_operatie, this.state.doctor, this.state.spital, this.state.nota, this.state.data, this.state.pacientKey);
+        addEKG(this.state.unda_P, this.state.complex_QRS, this.state.unda_T, this.state.segment_QT,
+            this.state.unda_ST, this.state.intervalul_RR, this.state.intervalul_PR, this.state.nota,
+            this.state.data, this.state.pacientKey);
         Alert.alert(
-            'Analize adaugate cu succes'
+            'EKG adaugat cu succes'
         );
     }
 
@@ -100,7 +146,7 @@ export default class AdaugareOperatii extends Component {
         const logOut = navigation.getParam("logout", () => {
         });
         return {
-            title: 'Adaugare operatie',
+            title: 'Adaugare EKG',
             headerRight:
                 () => (
                     <Button
@@ -127,48 +173,91 @@ export default class AdaugareOperatii extends Component {
 
     render() {
         return (
+            <ScrollView>
                 <View style={styles.main}>
-
                     <Item floatingLabel>
                         <Label
                             style={styles.input}>
-                            Titlu operatie
+                            Unda P
                         </Label>
                         <Input
                             autoCorrect={false}
-                            onChange={this.handleTitluOperatieChange.bind(this)} value={this.state.titlu_operatie}
+                            onChange={this.handleUndaPChange.bind(this)} value={this.state.unda_P}
                         />
                     </Item>
                     <Item floatingLabel>
                         <Label style={styles.input}>
-                            Doctor
+                            Complex QRS
                         </Label>
                         <Input autoCorrect={false}
-                               onChange={this.handleDoctorChange.bind(this)} value={this.state.doctor}
+                               onChange={this.handleComplexQrsChange.bind(this)} value={this.state.complex_QRS}
                         />
                     </Item>
                     <Item floatingLabel>
-                        <Label style={styles.input}>
-                            Spital
+                        <Label
+                            style={styles.input}>
+                            Unda T
                         </Label>
-                        <Input autoCorrect={false}
-                               onChange={this.handleSpitalChange.bind(this)} value={this.state.spital}
+                        <Input
+                            autoCorrect={false}
+                            onChange={this.handleUndaTChange.bind(this)} value={this.state.unda_T}
                         />
                     </Item>
                     <Item floatingLabel>
-                        <Label style={styles.input}>
+                        <Label
+                            style={styles.input}>
+                            Segment QT
+                        </Label>
+                        <Input
+                            autoCorrect={false}
+                            onChange={this.handleSegmentQtChange.bind(this)} value={this.state.segment_QT}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label
+                            style={styles.input}>
+                            Unda ST
+                        </Label>
+                        <Input
+                            autoCorrect={false}
+                            onChange={this.handleUndaStChange.bind(this)} value={this.state.unda_ST}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label
+                            style={styles.input}>
+                            Intervalul RR
+                        </Label>
+                        <Input
+                            autoCorrect={false}
+                            onChange={this.handleIntervalul_RrChange.bind(this)} value={this.state.intervalul_RR}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label
+                            style={styles.input}>
+                            Intervalul PR
+                        </Label>
+                        <Input
+                            autoCorrect={false}
+                            onChange={this.handleIntervalul_PrChange.bind(this)} value={this.state.intervalul_PR}
+                        />
+                    </Item>
+                    <Item floatingLabel>
+                        <Label
+                            style={styles.input}>
                             Nota
                         </Label>
-                        <Input autoCorrect={false}
-                               onChange={this.handleNotaChange.bind(this)} value={this.state.nota}
+                        <Input
+                            autoCorrect={false}
+                            onChange={this.handleNotaChange.bind(this)} value={this.state.nota}
                         />
                     </Item>
-
                     <DatePicker
                         style={{width: 200, marginTop: 5}}
                         date={this.state.date}
                         mode="date"
-                        placeholder="Data operatiei"
+                        placeholder="Data efectuarii EKG-ului"
                         format="YYYY-MM-DD"
                         minDate="1950-01-01"
                         maxDate="2116-06-01"
@@ -189,7 +278,6 @@ export default class AdaugareOperatii extends Component {
                             this.setState({data: date})
                         }}
                     />
-
                     <TouchableHighlight
                         style={styles.button}
                         underlayColor="white"
@@ -197,14 +285,16 @@ export default class AdaugareOperatii extends Component {
                             this.handleSubmit();
                             this.navigation()
                         }}
-
                     >
                         <Text
                             style={styles.buttonText}>
                             Adauga
                         </Text>
                     </TouchableHighlight>
+
+
                 </View>
+            </ScrollView>
         )
     }
 }

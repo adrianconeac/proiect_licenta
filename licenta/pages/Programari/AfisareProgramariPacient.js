@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Alert} from 'react-native';
+import {View, Text, StyleSheet, Alert, ScrollView} from 'react-native';
 import {Container} from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button} from 'react-native-elements';
 import {stergerePacient} from "../../services/StergereService";
 import PropTypes from "prop-types";
+import {widthPercentageToDP as wp, heightPercentageToDP as hp} from 'react-native-responsive-screen';
 
 export default class AfisareProgramariPacient extends Component {
 
@@ -34,20 +35,53 @@ export default class AfisareProgramariPacient extends Component {
         items: PropTypes.array.isRequired
     };
 
+    navigationFunction() {
+        this.props.navigation.navigate('LoginScreen')
+    }
+
+    static navigationOptions = ({navigation}) => {
+        const logOut = navigation.getParam("logout", () => {
+        });
+        return {
+            title: 'Programari',
+            headerRight:
+                () => (
+                    <Button
+                        buttonStyle={{
+                            backgroundColor: '#546e7a',
+                            marginRight: 5
+                        }}
+                        icon={
+                            <Icon
+                                name="sign-out"
+                                size={15}
+                                color="white"
+                            />
+                        }
+                        title="Sign out"
+                        onPress={logOut}/>
+                )
+        }
+    };
+
+    componentDidMount() {
+        this.props.navigation.setParams({logout: () => this.navigationFunction()});
+    }
 
     render() {
         let programari = this.props.navigation.getParam('programari');
         let pacientKey = this.props.navigation.getParam('key');
+
         // let analizeKey = this.props.navigation.getParam('analizekey');
 
         function ProgramariPacient(props) {
             if (Object.entries(programari).length > 0) {
-                return Object.entries(programari).map(([programareKey,value]) => (
+                return Object.entries(programari).map(([programareKey, value]) => (
                     <View>
                         <Text style={styles.item}>Nume programare: {value.nume_programare}</Text>
                         <Text style={styles.item}>Data: {value.data}</Text>
                         <Text style={styles.item}>Ora: {value.ora}</Text>
-                        <Button style={styles.button}
+                        <Button buttonStyle={styles.button}
                                 icon={
                                     <Icon
                                         name="edit"
@@ -65,22 +99,26 @@ export default class AfisareProgramariPacient extends Component {
                     </View>
                 ));
             } else {
-                return <Text>Nu avem analize boss...</Text>;
+                return(
+                <View>
+                <Text style={styles.programariNull}>Nu exista programari</Text>
+                </View>
+                );
             }
         }
 
-
-
-
-
         return (
 
-            <Container>
+            <Container style={styles.container}>
+                <ScrollView>
+
+                    <View>
+                        <ProgramariPacient props={this.props} navigation={this.props.navigation}/>
+                    </View>
+
+                </ScrollView>
                 <View>
-                    <ProgramariPacient props={this.props} navigation={this.props.navigation}/>
-                </View>
-                <View>
-                    <Button style={styles.button}
+                    <Button buttonStyle={styles.button}
                             icon={
                                 <Icon
                                     name="edit"
@@ -95,9 +133,6 @@ export default class AfisareProgramariPacient extends Component {
                             })}>
                     </Button>
                 </View>
-                <View>
-
-                </View>
             </Container>
         );
     }
@@ -105,8 +140,7 @@ export default class AfisareProgramariPacient extends Component {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
-        paddingTop: 22
+        flex: 1
     },
     item: {
         padding: 10,
@@ -114,13 +148,17 @@ const styles = StyleSheet.create({
         height: 50,
     },
     button: {
-        width: 150,
-        marginLeft: 10,
-        marginBottom: 30
+        marginTop: 10,
+        backgroundColor: '#546e7a',
     },
     delete: {
         marginTop: 20,
         width: 150,
         marginLeft: 10
     },
+    programariNull: {
+        marginLeft: 80,
+        fontSize: 20,
+        marginTop: 250,
+    }
 });

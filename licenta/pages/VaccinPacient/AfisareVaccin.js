@@ -1,14 +1,12 @@
 import React, {Component} from 'react';
-import {View, Text, StyleSheet, Alert, ScrollView, Image} from 'react-native';
+import {View, Text, StyleSheet, Alert, ScrollView} from 'react-native';
 import {Container} from "native-base";
 import Icon from 'react-native-vector-icons/FontAwesome';
 import {Button} from 'react-native-elements';
 import {stergerePacient} from "../../services/StergereService";
 import PropTypes from "prop-types";
-import Firebase from "firebase";
-import * as firebase from "firebase";
 
-export default class AnalizePacient extends Component {
+export default class AfisareVaccin extends Component {
 
     constructor(props) {
 
@@ -16,8 +14,7 @@ export default class AnalizePacient extends Component {
         let pacientKey = this.props.navigation.getParam('pacientKey');
 
         this.state = {
-            pacientKey: pacientKey,
-            urlAnalize: null
+            pacientKey: pacientKey
         };
         this.handleSubmit = this.handleSubmit.bind(this);
     }
@@ -45,7 +42,7 @@ export default class AnalizePacient extends Component {
         const logOut = navigation.getParam("logout", () => {
         });
         return {
-            title: 'Analize pacient',
+            title: 'Vaccin',
             headerRight:
                 () => (
                     <Button
@@ -67,72 +64,48 @@ export default class AnalizePacient extends Component {
     };
 
     componentDidMount() {
-
         this.props.navigation.setParams({logout: () => this.navigationFunction()});
-        this.getAnalizePhoto().then(url => {
-            this.setState({
-                ...this.state,
-                urlAnalize: url
-            });
-        });
     }
-
-    async getAnalizePhoto() {
-        let temp = {};
-        const analize = Object.values(this.props.navigation.getParam('analize'));
-        for(const analiza of analize) {
-            await firebase.storage().ref().child(`images/${analiza.nume_analize}`).getDownloadURL().then(url => {
-                temp[analiza.nume_analize] = url;
-            })
-                .catch(error => console.log("Error caught: " + error.message));
-        }
-
-        return temp;
-    }
-
 
     render() {
-        let analize = this.props.navigation.getParam('analize');
+        let vaccin = this.props.navigation.getParam('vaccin');
         let pacientKey = this.props.navigation.getParam('key');
-        let url = this.state.urlAnalize;
-        function AnalizePacient(props) {
-            if (Object.entries(analize).length > 0) {
-                return Object.entries(analize).map(([analizeKey, value]) => (
-                    <View style={styles.flex}>
-                        <Text style={styles.item}>Nume analiza: {value.nume_analize}</Text>
-                        {url && <Image
-                            style={styles.tinyLogo}
-                            source={{uri: url[value.nume_analize]}}
-                        />}
-                        {/*<Button style={styles.button}*/}
-                        {/*        icon={*/}
-                        {/*            <Icon*/}
-                        {/*                name="edit"*/}
-                        {/*                size={15}*/}
-                        {/*                color="white"*/}
-                        {/*            />*/}
-                        {/*        }*/}
-                        {/*        title="Modifica analize"*/}
-                        {/*        onPress={() => props.navigation.navigate('ModificareAnalizeScreen', {*/}
 
-                        {/*            analizeKey: analizeKey,*/}
-                        {/*            pacientKey: pacientKey,*/}
-                        {/*            analize: value*/}
-                        {/*        })}>*/}
-                        {/*</Button>*/}
+        function VaccinPacient(props) {
+            if (Object.entries(vaccin).length > 0) {
+                return Object.entries(vaccin).map(([vaccinKey, value]) => (
+
+                    <View>
+                        <Text style={styles.item}>Tip vaccin: {value.tip_vaccin}</Text>
+                        <Text style={styles.item}>Data: {value.data}</Text>
+                        <Button buttonStyle={styles.button}
+                                icon={
+                                    <Icon
+                                        name="edit"
+                                        size={15}
+                                        color="white"
+                                    />
+                                }
+                                title="Modifica vaccin"
+                                onPress={() => props.navigation.navigate('ModificareVaccinScreen', {
+
+                                    vaccinKey: vaccinKey,
+                                    pacientKey: pacientKey,
+                                    vaccin: value
+                                })}>
+                        </Button>
                     </View>
                 ));
             } else {
-                return <Text style={styles.analizeNull}>Nu exista analize</Text>;
+                return <Text style={styles.vaccinNull}>Nu exista vaccinari</Text>;
             }
         }
 
         return (
-
             <Container>
-                <ScrollView style={styles.container}>
+                <ScrollView>
                     <View>
-                        <AnalizePacient props={this.props} navigation={this.props.navigation}/>
+                        <VaccinPacient props={this.props} navigation={this.props.navigation}/>
                     </View>
                 </ScrollView>
                 <View>
@@ -144,8 +117,8 @@ export default class AnalizePacient extends Component {
                                     color="white"
                                 />
                             }
-                            title="Adaugare analize"
-                            onPress={() => this.props.navigation.navigate('AdaugareAnalizeScreen', {
+                            title="Adaugare vaccin"
+                            onPress={() => this.props.navigation.navigate('AdaugareVaccinScreen', {
                                 // pacient: pacient,
                                 pacientKey: pacientKey
                             })}>
@@ -159,13 +132,8 @@ export default class AnalizePacient extends Component {
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        // paddingTop: 22,
-        // backgroundColor: '#546e7a',
+        paddingTop: 22
     },
-flex :{
-    flex: 1,
-},
-
     item: {
         padding: 10,
         fontSize: 20,
@@ -180,15 +148,9 @@ flex :{
         width: 150,
         marginLeft: 10
     },
-    tinyLogo: {
-        width: 360,
-        height: 450,
-    },
-    analizeNull: {
+    vaccinNull: {
         marginLeft: 100,
         fontSize: 20,
         marginTop: 250,
-
-
     }
 });
